@@ -7,8 +7,8 @@ sys.path.append(library_path)
 from maze import maze
 import DFS
 import BFS
-from aStar import aStar
-from dijkstra import dijkstra
+import aStar
+import dijkstra
 
 import csv
 import random
