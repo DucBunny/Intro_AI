@@ -4,8 +4,8 @@ library_path = os.path.join(os.path.dirname(__file__), '..', 'Library')
 sys.path.append(library_path)
 
 from agent import agent
-from color import COLOR
 from maze import maze
+from color import COLOR
 from textLabel import textLabel
 
 def dijkstra(m, start=None):
@@ -79,21 +79,21 @@ if __name__ == '__main__':
     my_maze = maze(10, 10)
     my_maze.CreateMaze(1, 4)
 
-    # Tìm đường với Dijkstra
-    path, cost, cells_searched = dijkstra(my_maze, start=(6, 1))
-    
-    # Hiển thị thông tin về đường đi
-    textLabel(my_maze, 'Tổng chi phí', cost)
-    textLabel(my_maze, 'Số ô đã duyệt', cells_searched)
-    textLabel(my_maze, 'Độ dài đường đi', len(path) + 1)
-    
-    print(f"Chi phí: {cost}")
-    print(f"Độ dài đường đi: {len(path) + 1}")
-    print(f"Số ô đã duyệt: {cells_searched}")
+    forward_path, cost, cells_searched = dijkstra(my_maze, (6, 1))
 
     # Hiển thị đường đi
-    agent_path = agent(my_maze, 6, 1, color=COLOR.cyan, filled=True, footprints=True)
-    my_maze.tracePath({agent_path: path})
+    agent_path = agent(my_maze, 6, 1, goal=(1, 4), filled=True, footprints=True, color=COLOR.SEARCH)
 
-    # Chạy mô phỏng
+    # Hiển thị quan hệ cha-con
+    # agent_parent = agent(my_maze, 1, 4, goal=(6, 1), filled=True, footprints=True, color=COLOR.PARENT)
+
+    # Hiển thị các đường đi
+    my_maze.tracePath({agent_path: forward_path}, delay=100)
+    # my_maze.tracePath({agent_parent: parent_path}, delay=100)
+
+    # Hiển thị thông tin về đường đi
+    textLabel(my_maze, 'Cost', cost)
+    textLabel(my_maze, 'Dijkstra Forward Path', len(forward_path) + 1)
+    textLabel(my_maze, 'Dijkstra Cell Search', cells_searched)
+
     my_maze.run()

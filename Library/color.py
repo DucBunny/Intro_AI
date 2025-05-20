@@ -1,11 +1,11 @@
 from enum import Enum
 
 class COLOR(Enum):
-    dark = ('gray11', 'white')
-    light = ('white', 'black')
-    black = ('black', 'dim gray')
-    red = ('red3', 'tomato')
-    cyan = ('cyan4', 'cyan4')
-    green = ('green4', 'pale green')
-    blue = ('DeepSkyBlue4', 'DeepSkyBlue2')
-    yellow = ('yellow2', 'yellow2')
+    DEFAULT = ('DeepSkyBlue4', 'DeepSkyBlue2')
+
+    MAZE = ('gray11', 'white')
+    GOAL = ('firebrick3', 'IndianRed1')
+
+    SEARCH = ('RoyalBlue3', 'SteelBlue1')
+    PARENT = ('goldenrod3', 'gold')
+    PATH = ('green4', 'SpringGreen1')

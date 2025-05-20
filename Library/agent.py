@@ -2,7 +2,7 @@ from tkinter import *
 from color import COLOR
 
 class agent:
-    def __init__(self, parent_maze, x=None, y=None, shape='square', goal=None, filled=False, footprints=False, color=COLOR.blue):
+    def __init__(self, parent_maze, x=None, y=None, shape='square', goal=None, filled=False, footprints=False, color=COLOR.DEFAULT):
         self._parent_maze = parent_maze
         
         # Xử lý color

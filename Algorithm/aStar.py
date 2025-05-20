@@ -96,14 +96,14 @@ if __name__ == '__main__':
 
     search_path, path_dict, forward_path = aStar(my_maze, (1, 12))
 
-    # Hiển thị quá trình tìm kiếm (màu xanh dương)
-    agent_search = agent(my_maze, 1, 12, footprints=True, color=COLOR.blue, filled=True)
+    # Hiển thị quá trình tìm kiếm
+    agent_search = agent(my_maze, 1, 12, goal=(6, 4), filled=True, footprints=True, color=COLOR.SEARCH)
     
-    # Hiển thị quan hệ cha-con (màu vàng)
-    agent_parent = agent(my_maze, 6, 4, footprints=True, color=COLOR.yellow, filled=True, goal=(1, 12))
+    # Hiển thị quan hệ cha-con
+    agent_parent = agent(my_maze, 6, 4, goal=(1, 12), filled=True, footprints=True, color=COLOR.PARENT)
     
-    # Hiển thị đường đi tối ưu (màu đỏ)
-    agent_optimal = agent(my_maze, 1, 12, footprints=True, color=COLOR.red, goal=(6, 4))
+    # Hiển thị đường đi tối ưu
+    agent_optimal = agent(my_maze, 1, 12, goal=(6, 4), footprints=True, color=COLOR.PATH)
     
     # Hiển thị các đường đi
     my_maze.tracePath({agent_search: search_path}, delay=100)
@@ -111,8 +111,7 @@ if __name__ == '__main__':
     my_maze.tracePath({agent_optimal: forward_path}, delay=100)
 
     # Hiển thị thông tin độ dài đường đi
-    textLabel(my_maze, 'A Star Path Length', len(forward_path) + 1)
-    textLabel(my_maze, 'A Star Search Length', len(search_path))
+    textLabel(my_maze, 'A Star Forward Path', len(forward_path) + 1)
+    textLabel(my_maze, 'A Star Search Path', len(search_path))
 
-    # Chạy mô phỏng
     my_maze.run()

@@ -6,6 +6,7 @@ sys.path.append(library_path)
 from agent import agent
 from maze import maze
 from color import COLOR
+from textLabel import textLabel
 from collections import deque
 
 def BFS(m, start=None):
@@ -69,25 +70,27 @@ def BFS(m, start=None):
 
 if __name__ == '__main__':
     # Tạo mê cung 10x10 với điểm đích ở (2,4)
-    m = maze(10, 10)
-    m.CreateMaze(2, 4, loopPercent=1.0)
+    my_maze = maze(10, 10)
+    my_maze.CreateMaze(2, 4, loopPercent=1.0)
 
-    # Tìm đường với BFS
-    search_path, parent_path, forward_path = BFS(m, (5, 1))
+    search_path, parent_path, forward_path = BFS(my_maze, (5, 1))
 
-    # Hiển thị quá trình tìm kiếm (màu vàng)
-    agent_search = agent(m, 5, 1, goal=(2, 4), footprints=True, color=COLOR.yellow, shape='square', filled=True)
+    # Hiển thị quá trình tìm kiếm 
+    agent_search = agent(my_maze, 5, 1, goal=(2, 4), filled=True, footprints=True, color=COLOR.SEARCH)
     
     # Hiển thị quan hệ cha-con
-    agent_parent = agent(m, 2, 4, goal=(5, 1), footprints=True, filled=True)
+    agent_parent = agent(my_maze, 2, 4, goal=(5, 1), filled=True, footprints=True, color=COLOR.PARENT)
     
-    # Hiển thị đường đi tối ưu (màu vàng)
-    agent_optimal = agent(m, 5, 1, footprints=True, color=COLOR.yellow)
+    # Hiển thị đường đi tối ưu 
+    agent_optimal = agent(my_maze, 5, 1, goal=(2, 4), footprints=True, color=COLOR.PATH)
     
     # Hiển thị các đường đi
-    m.tracePath({agent_search: search_path}, delay=100)
-    m.tracePath({agent_parent: parent_path}, delay=100)
-    m.tracePath({agent_optimal: forward_path}, delay=100)
+    my_maze.tracePath({agent_search: search_path}, delay=100)
+    my_maze.tracePath({agent_parent: parent_path}, delay=100)
+    my_maze.tracePath({agent_optimal: forward_path}, delay=100)
 
-    # Chạy mô phỏng
-    m.run()
+    # Hiển thị thông tin độ dài đường đi
+    textLabel(my_maze, 'BFS Forward Path', len(forward_path) + 1)
+    textLabel(my_maze, 'BFS Search Path', len(search_path))
+
+    my_maze.run()
