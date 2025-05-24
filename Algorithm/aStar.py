@@ -9,108 +9,98 @@ from color import COLOR
 from textLabel import textLabel
 from queue import PriorityQueue
 
-def h(cell1,cell2):
-    x1,y1=cell1
-    x2,y2=cell2
-    return abs(x1-x2) + abs(y1-y2)
-
-def aStar(m):
-    start=(m.rows,m.cols)
-    g_score={cell:float('inf') for cell in m.grid}
-    g_score[start]=0
-    f_score={cell:float('inf') for cell in m.grid}
-    f_score[start]=h(start,(1,1))
-
-    open=PriorityQueue()
-    open.put((h(start,(1,1)),h(start,(1,1)),start))
-    aPath={}
-    searchedPath = []
-    while not open.empty():
-        currCell=open.get()[2]
-        if currCell not in searchedPath:
-            searchedPath.append(currCell)
-        for d in range(4):
-            if m.maze_map[currCell][d]==True:
-                dx = [0, -1, 1, 0]
-                dy = [-1, 0 ,0, 1]
-                child=(currCell[0] + dx[d], currCell[1] + dy[d])
-
-                temp_g_score=g_score[currCell]+1
-                temp_f_score=temp_g_score+h(child,(1,1))
-
-                if temp_f_score < f_score[child]:
-                    g_score[child]= temp_g_score
-                    f_score[child]= temp_f_score
-                    open.put((temp_f_score,h(child,(1,1)),child))
-                    aPath[child]=currCell
-    fwdPath={}
-    cell=(1,1)
-    while cell!=start:
-        fwdPath[aPath[cell]]=cell
-        cell=aPath[cell]
-    return fwdPath
-
+# Hàm heuristic sử dụng khoảng cách Manhattan
 def h(cell1, cell2):
     x1, y1 = cell1
     x2, y2 = cell2
-    return (abs(x1 - x2) + abs(y1 - y2))
+    return abs(x1 - x2) + abs(y1 - y2)
     
-def aStar(m,start=None):
+def aStar(m, start=None):
     if start is None:
-        start=(m.rows,m.cols)
-    open = PriorityQueue()
-    open.put((h(start, m._goal), h(start, m._goal), start))
-    aPath = {}
-    g_score = {row: float("inf") for row in m.grid}
+        start = (m.rows, m.cols)
+
+    # Các hướng di chuyển
+    dx = [0, -1, 1, 0]
+    dy = [-1, 0, 0, 1]
+        
+    # Khởi tạo hàng đợi ưu tiên
+    open_set = PriorityQueue()
+    open_set.put((h(start, m._goal), h(start, m._goal), start))
+    
+    # Khởi tạo dictionary lưu trữ
+    path_dict = {}
+
+    g_score = {cell: float("inf") for cell in m.grid}
     g_score[start] = 0
-    f_score = {row: float("inf") for row in m.grid}
+
+    f_score = {cell: float("inf") for cell in m.grid}
     f_score[start] = h(start, m._goal)
-    searchPath=[start]
-    while not open.empty():
-        currCell = open.get()[2]
-        searchPath.append(currCell)
+    
+    # Lưu các ô đã khám phá
+    search_path = [start]
+    
+    while not open_set.empty():
+        # Lấy ô có f_score thấp nhất
+        currCell = open_set.get()[2]
+        search_path.append(currCell)
+        
+        # Đã tìm thấy đích
         if currCell == m._goal:
-            break        
+            break
+            
+        # Khám phá các ô kề
         for d in range(4):
-            if m.maze_map[currCell][d]==True:
-                dx = [0, -1, 1, 0]
-                dy = [-1, 0 ,0, 1]
-                child=(currCell[0] + dx[d], currCell[1] + dy[d])
+            if m.maze_map[currCell][d]:
+                child = (currCell[0] + dx[d], currCell[1] + dy[d])
 
+                # Tính toán g_score và f_score mới
                 temp_g_score = g_score[currCell] + 1
-                temp_f_score = temp_g_score + h(child, m._goal)
 
-                if temp_f_score < f_score[child]:   
-                    aPath[child] = currCell
+                # Nếu tìm thấy đường đi tốt hơn
+                if temp_g_score < g_score[child]:   
+                    path_dict[child] = currCell
                     g_score[child] = temp_g_score
                     f_score[child] = temp_g_score + h(child, m._goal)
-                    open.put((f_score[child], h(child, m._goal), child))
+                    open_set.put((f_score[child], h(child, m._goal), child))
 
+    # Tạo đường đi từ điểm bắt đầu đến đích
+    forward_path = {}
+    cell = m._goal
 
-    fwdPath={}
-    cell=m._goal
-    while cell!=start:
-        fwdPath[aPath[cell]]=cell
-        cell=aPath[cell]
-    return searchPath,aPath,fwdPath
-
-if __name__=='__main__':
+    # Kiểm tra nếu không tìm thấy đường đi
+    # if m._goal not in path_dict and start != m._goal:
+    #     print("No path found from start to goal!")
+    #     return search_path, path_dict, forward_path
     
-    myMaze=maze(10,15)
-    myMaze.CreateMaze(6,4,loopPercent=100)
+    while cell != start:
+        forward_path[path_dict[cell]] = cell
+        cell = path_dict[cell]
+        
+    return search_path, path_dict, forward_path
 
-    searchPath,aPath,fwdPath=aStar(myMaze,(1,12))
 
+if __name__ == '__main__':
+    my_maze = maze(30, 30)
+    my_maze.CreateMaze(6, 4, loopPercent=100)
 
-    a=agent(myMaze,1,12,footprints=True,color=COLOR.SEARCH,filled=True)
-    b=agent(myMaze,6,4,footprints=True,color=COLOR.PARENT,filled=True,goal=(1,12))
-    c=agent(myMaze,1,12,footprints=True,color=COLOR.PATH,goal=(6,4))
-    myMaze.tracePath({a:searchPath},delay=100)
-    myMaze.tracePath({b:aPath},delay=100)
+    search_path, path_dict, forward_path = aStar(my_maze, (1, 12))
 
-    myMaze.tracePath({c:fwdPath},delay=100)
+    # Hiển thị quá trình tìm kiếm 
+    agent_search = agent(my_maze, 1, 12, goal=(6, 4), filled=True, footprints=True, color=COLOR.SEARCH)
 
-    l=textLabel(myMaze,'A Star Path Length',len(fwdPath)+1)
-    l=textLabel(myMaze,'A Star Search Length',len(searchPath))
+    # Hiển thị quan hệ cha-con
+    agent_parent = agent(my_maze, 6, 4, goal=(1, 12), filled=True, footprints=True, color=COLOR.PARENT)
 
-    myMaze.run()
+    # Hiển thị đường đi tối ưu
+    agent_optimal = agent(my_maze, 1, 12, goal=(6, 4), footprints=True, color=COLOR.PATH)
+    
+    # Hiển thị các đường đi
+    my_maze.tracePath({agent_search: search_path}, delay=100)
+    my_maze.tracePath({agent_parent: path_dict}, delay=100)
+    my_maze.tracePath({agent_optimal: forward_path}, delay=100)
+
+    # Hiển thị thông tin độ dài đường đi
+    textLabel(my_maze, 'A Star Forward Path', len(forward_path) + 1)
+    textLabel(my_maze, 'A Star Search Path', len(search_path))
+
+    my_maze.run()

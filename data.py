@@ -60,17 +60,17 @@ for _ in range(num_runs):
     results_path.append([len(dfwdPath), len(bfwdPath), len(afwdPath), len(path)])
 
 headers = ['DFS', 'BFS', 'AStar', 'Dijkstra']
-with open('./data/node2.csv', 'w', newline='') as file:
+with open('./data/node.csv', 'w', newline='') as file:
     writer = csv.writer(file)
-    writer.writerow(headers)  # Thêm dòng này để ghi headers
+    writer.writerow(headers)  
     writer.writerows(results_node)
 
-with open('./data/time2.csv', 'w', newline='') as file:
+with open('./data/time.csv', 'w', newline='') as file:
     writer = csv.writer(file)
-    writer.writerow(headers)  # Thêm dòng này để ghi headers
+    writer.writerow(headers)  
     writer.writerows(results_time)
 
-with open('./data/path2.csv', 'w', newline='') as file:
+with open('./data/path.csv', 'w', newline='') as file:
     writer = csv.writer(file)
-    writer.writerow(headers)  # Thêm dòng này để ghi headers
+    writer.writerow(headers)  
     writer.writerows(results_path)

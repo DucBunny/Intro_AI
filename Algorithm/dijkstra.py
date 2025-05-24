@@ -81,7 +81,7 @@ if __name__ == '__main__':
 
     forward_path, cost, cells_searched = dijkstra(my_maze, (6, 1))
 
-    # Hiển thị đường đi
+    # Hiển thị quá trình tìm kiếm 
     agent_path = agent(my_maze, 6, 1, goal=(1, 4), filled=True, footprints=True, color=COLOR.SEARCH)
 
     # Hiển thị quan hệ cha-con
