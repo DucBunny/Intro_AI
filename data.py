@@ -21,8 +21,8 @@ results_time = []
 results_path = []
 
 for _ in range(num_runs):
-    row = 10
-    col = 100
+    row = 50
+    col = 50
     m = maze(row, col)
     x = random.randint(1, row)
     y = random.randint(1, col)
@@ -45,13 +45,13 @@ for _ in range(num_runs):
 
     # AStar
     start_time = time.time()
-    aSearch, aPath, afwdPath = aStar(m, start)
+    aSearch, aPath, afwdPath = aStar.aStar(m, start)
     end_time = time.time()
     AStar_time = end_time - start_time
 
     # Dijkstra
     start_time = time.time()
-    path, cost, cell=dijkstra(m,start)
+    path, cost, cell = dijkstra.dijkstra(m,start)
     end_time = time.time()
     Dijkstra_time = end_time - start_time
 
@@ -60,17 +60,17 @@ for _ in range(num_runs):
     results_path.append([len(dfwdPath), len(bfwdPath), len(afwdPath), len(path)])
 
 headers = ['DFS', 'BFS', 'AStar', 'Dijkstra']
-with open('./data/node.csv', 'w', newline='') as file:
+with open('./data/node2.csv', 'w', newline='') as file:
     writer = csv.writer(file)
     writer.writerow(headers)  # Thêm dòng này để ghi headers
     writer.writerows(results_node)
 
-with open('./data/time.csv', 'w', newline='') as file:
+with open('./data/time2.csv', 'w', newline='') as file:
     writer = csv.writer(file)
     writer.writerow(headers)  # Thêm dòng này để ghi headers
     writer.writerows(results_time)
 
-with open('./data/path.csv', 'w', newline='') as file:
+with open('./data/path2.csv', 'w', newline='') as file:
     writer = csv.writer(file)
     writer.writerow(headers)  # Thêm dòng này để ghi headers
     writer.writerows(results_path)
