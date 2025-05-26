@@ -41,24 +41,24 @@ def aStar(m, start=None):
     
     while not open_set.empty():
         # Lấy ô có f_score thấp nhất
-        currCell = open_set.get()[2]
-        search_path.append(currCell)
+        current = open_set.get()[2]
+        search_path.append(current)
         
         # Đã tìm thấy đích
-        if currCell == m._goal:
+        if current == m._goal:
             break
             
         # Khám phá các ô kề
         for d in range(4):
-            if m.maze_map[currCell][d]:
-                child = (currCell[0] + dx[d], currCell[1] + dy[d])
+            if m.maze_map[current][d]:
+                child = (current[0] + dx[d], current[1] + dy[d])
 
                 # Tính toán g_score và f_score mới
-                temp_g_score = g_score[currCell] + 1
+                temp_g_score = g_score[current] + 1
 
                 # Nếu tìm thấy đường đi tốt hơn
                 if temp_g_score < g_score[child]:   
-                    path_dict[child] = currCell
+                    path_dict[child] = current
                     g_score[child] = temp_g_score
                     f_score[child] = temp_g_score + h(child, m._goal)
                     open_set.put((f_score[child], h(child, m._goal), child))

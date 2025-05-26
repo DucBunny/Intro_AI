@@ -21,7 +21,7 @@ def dijkstra(m, start=None):
     unvisited[start] = 0
     visited = {}
     parent_path = {}
-    cells_searched = 0
+    cells_searched = []
     
     while unvisited:
         # Lấy ô có khoảng cách ngắn nhất
@@ -29,12 +29,13 @@ def dijkstra(m, start=None):
         
         # Thêm vào tập đã xét
         visited[current] = unvisited[current]
-        
+        cells_searched.append(current)
+
         # Nếu đến đích, thoát vòng lặp
         if current == m._goal:
             break
             
-        cells_searched += 1
+        # cells_searched += 1
         
         # Xét các ô kề
         for d in range(4):
@@ -82,18 +83,25 @@ if __name__ == '__main__':
     forward_path, cost, cells_searched = dijkstra(my_maze, (6, 1))
 
     # Hiển thị quá trình tìm kiếm 
-    agent_path = agent(my_maze, 6, 1, goal=(1, 4), filled=True, footprints=True, color=COLOR.SEARCH)
+    # agent_search = agent(my_maze, 6, 1, goal=(1, 4), filled=True, footprints=True, color=COLOR.SEARCH)
 
     # Hiển thị quan hệ cha-con
     # agent_parent = agent(my_maze, 1, 4, goal=(6, 1), filled=True, footprints=True, color=COLOR.PARENT)
 
+    # Hiển thị đường đi 
+    agent_path = agent(my_maze, 6, 1, goal=(1, 4), filled=True, footprints=True, color=COLOR.SEARCH)
+
     # Hiển thị các đường đi
-    my_maze.tracePath({agent_path: forward_path}, delay=100)
+    # my_maze.tracePath({agent_search: cells_searched}, delay=100)
     # my_maze.tracePath({agent_parent: parent_path}, delay=100)
+    my_maze.tracePath({agent_path: forward_path}, delay=100)
+
 
     # Hiển thị thông tin về đường đi
     textLabel(my_maze, 'Cost', cost)
     textLabel(my_maze, 'Dijkstra Forward Path', len(forward_path) + 1)
-    textLabel(my_maze, 'Dijkstra Cell Search', cells_searched)
+    textLabel(my_maze, 'Dijkstra Cell Search', len(cells_searched))
 
     my_maze.run()
+
+    # Ma trận không trọng số => giống BFS

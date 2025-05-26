@@ -55,7 +55,7 @@ for _ in range(num_runs):
     end_time = time.time()
     Dijkstra_time = end_time - start_time
 
-    results_node.append([len(dSearch), len(bSearch), len(aSearch), cell])
+    results_node.append([len(dSearch), len(bSearch), len(aSearch), len(cell)])
     results_time.append([DFS_time, BFS_time, AStar_time, Dijkstra_time])
     results_path.append([len(dfwdPath), len(bfwdPath), len(afwdPath), len(path)])
 

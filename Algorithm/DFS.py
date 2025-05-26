@@ -74,7 +74,6 @@ def DFS(m, start=None):
 
 
 if __name__ == '__main__':
-    # Tạo mê cung 10x10 với điểm đích ở (2,4)
     my_maze = maze(10, 10)
     my_maze.CreateMaze(2, 4, loopPercent=1.0)
 
