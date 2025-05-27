@@ -51,7 +51,7 @@ for _ in range(num_runs):
 
     # Dijkstra
     start_time = time.time()
-    path, cost, cell = dijkstra.dijkstra(m,start)
+    path, cost, cell, parent_path = dijkstra.dijkstra(m,start)
     end_time = time.time()
     Dijkstra_time = end_time - start_time
 

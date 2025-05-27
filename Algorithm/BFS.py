@@ -67,7 +67,7 @@ def BFS(m, start=None):
     return search_path, parent_path, forward_path
 
 if __name__ == '__main__':
-    my_maze = maze(30, 30)
+    my_maze = maze(10, 10)
     my_maze.CreateMaze(2, 4, loopPercent=1.0)
 
     search_path, parent_path, forward_path = BFS(my_maze, (5, 1))

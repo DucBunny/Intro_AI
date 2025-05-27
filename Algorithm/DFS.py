@@ -72,7 +72,6 @@ def DFS(m, start=None):
         
     return search_path, parent_path, forward_path
 
-
 if __name__ == '__main__':
     my_maze = maze(10, 10)
     my_maze.CreateMaze(2, 4, loopPercent=1.0)

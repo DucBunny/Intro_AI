@@ -72,28 +72,27 @@ def dijkstra(m, start=None):
         cell = parent_path[cell]
         
     # Trả về đường đi, chi phí và số ô đã duyệt
-    return forward_path, visited[m._goal], cells_searched
+    return forward_path, visited[m._goal], cells_searched, parent_path
 
 
 if __name__ == '__main__':
-    # Tạo mê cung 10x10 với điểm đích ở (1,4)
-    my_maze = maze(10, 10)
+    my_maze = maze(8, 8)
     my_maze.CreateMaze(1, 4)
 
-    forward_path, cost, cells_searched = dijkstra(my_maze, (6, 1))
+    forward_path, cost, cells_searched, parent_path = dijkstra(my_maze, (6, 1))
 
     # Hiển thị quá trình tìm kiếm 
-    # agent_search = agent(my_maze, 6, 1, goal=(1, 4), filled=True, footprints=True, color=COLOR.SEARCH)
+    agent_search = agent(my_maze, 6, 1, goal=(1, 4), filled=True, footprints=True, color=COLOR.SEARCH)
 
     # Hiển thị quan hệ cha-con
-    # agent_parent = agent(my_maze, 1, 4, goal=(6, 1), filled=True, footprints=True, color=COLOR.PARENT)
+    agent_parent = agent(my_maze, 1, 4, goal=(6, 1), filled=True, footprints=True, color=COLOR.PARENT)
 
     # Hiển thị đường đi 
-    agent_path = agent(my_maze, 6, 1, goal=(1, 4), filled=True, footprints=True, color=COLOR.SEARCH)
+    agent_path = agent(my_maze, 6, 1, goal=(1, 4), filled=True, footprints=True, color=COLOR.PATH)
 
     # Hiển thị các đường đi
-    # my_maze.tracePath({agent_search: cells_searched}, delay=100)
-    # my_maze.tracePath({agent_parent: parent_path}, delay=100)
+    my_maze.tracePath({agent_search: cells_searched}, delay=100)
+    my_maze.tracePath({agent_parent: parent_path}, delay=100)
     my_maze.tracePath({agent_path: forward_path}, delay=100)
 
 
